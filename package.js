@@ -5,6 +5,10 @@ Package.describe({
   git: 'https://github.com/meteor-space/template-controller.git'
 });
 
+Npm.depends({
+  'es6-error': '2.1.0'
+});
+
 Package.onUse(function(api) {
 
   api.versionsFrom('1.3');
