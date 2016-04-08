@@ -114,9 +114,11 @@ TemplateController('hello', {
     }
   },
 
-  // All other properties and functions are added to the template instance
-  someProperty: 5,
-  someHelperFunction() {}
+  // These are added to the template instance but not exposed to the html
+  private: {
+    someProperty: 5,
+    someHelperFunction() {}
+  }
 
 });
 ```
@@ -206,14 +208,13 @@ events: {
 Since each state var is turned into a separate reactive var you do not run
 into any reactivity issues with re-rendering too much portions of your template.
 
-### Custom helper methods
+### `private: { myProperty: …, myMethod: … }`
 
-The API above can be considered as the "standard interface" of options. Any
-other properties and methods you define on the `options` object passed to
-`TemplateController` will be added to your template instance and are available
-anywhere. This way you can easily define custom "private" helper methods to
-calculate or setup stuff. Do not confuse these with "template helpers" though,
-they are not accessible from the html template.
+Any properties and methods you define on the `private` object will be added
+to your template instance and are available anywhere. This way you can easily
+define custom "private" helper methods to calculate or setup stuff. Do not
+confuse these with "template helpers" though, they are not accessible from
+the html template.
 
 Here is a short and contrived example, but you get the point:
 
@@ -229,9 +230,11 @@ TemplateController('hello', {
   },
 
   // These are just available on your template instance
-  myValue: 5,
-  sum(first, second) {
-    return first + second;
+  private: {
+    myValue: 5,
+    sum(first, second) {
+      return first + second;
+    }
   }
 });
 ```
