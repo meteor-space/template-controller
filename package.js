@@ -5,23 +5,23 @@ Package.describe({
   git: 'https://github.com/meteor-space/template-controller.git'
 });
 
-Npm.depends({
-  'es6-error': '2.1.0'
-});
-
 Package.onUse(function(api) {
 
-  api.versionsFrom('1.3');
+  // Have to stay on Meteor 1.2.1 to be compatible with all Meteor versions.
+  api.versionsFrom('1.2.1');
 
   api.use([
-    'modules',
     'ecmascript',
     'reactive-var',
     'templating',
     'blaze-html-templates'
-  ]);
+  ], 'client');
 
-  api.mainModule("source/template-controller.js", "client");
-  api.export("TemplateController");
+  api.addFiles([
+    'source/extendable-error.js',
+    'source/template-controller.js'
+  ], 'client');
+
+  api.export('TemplateController');
 
 });

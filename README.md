@@ -62,6 +62,8 @@ TemplateController('hello', {
 ## Installation
 `meteor add space:template-controller`
 
+*Compatible with `Meteor 1.2.x - 1.3.x`*
+
 ## Usage
 
 ### `TemplateController(templateName, options)`

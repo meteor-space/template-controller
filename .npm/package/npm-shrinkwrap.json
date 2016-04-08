@@ -1,9 +1,0 @@
-{
-  "dependencies": {
-    "es6-error": {
-      "version": "2.1.0",
-      "resolved": "https://registry.npmjs.org/es6-error/-/es6-error-2.1.0.tgz",
-      "from": "es6-error@2.1.0"
-    }
-  }
-}

@@ -1,7 +1,3 @@
-import { Template } from 'meteor/templating';
-import { ReactiveVar } from 'meteor/reactive-var';
-import ExtendableError from 'es6-error';
-
 const DEFAULT_API = [
   'state', 'props', 'helpers', 'events', 'onCreated', 'onRendered', 'onDestroyed'
 ];
@@ -44,7 +40,8 @@ class PropertyValidatorRequired extends ExtendableError {
   }
 }
 
-const TemplateController = function(templateName, config) {
+// We have to make it a global to support Meteor 1.2.x
+TemplateController = function(templateName, config) {
   // Template reference
   let template = Template[templateName];
   if (!template) {
@@ -108,5 +105,3 @@ const TemplateController = function(templateName, config) {
   if (onDestroyed) template.onDestroyed(onDestroyed);
 
 };
-
-export default TemplateController;
