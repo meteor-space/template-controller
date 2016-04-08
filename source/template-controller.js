@@ -55,20 +55,23 @@ TemplateController = function(templateName, config) {
     delete config[apiProp];
   }
 
-  // State & Custom instance methods
-  if (state) {
-    template.onCreated(function() {
+  // State & private instance methods
+  template.onCreated(function() {
+    if (state) {
       this.state = {};
       // Setup the state as reactive vars
       for (let key of Object.keys(state)) {
         this.state[key] = generateReactiveAccessor(state[key]);
       }
-      // Add the custom helpers and properties to the template instance
-      for (let key of Object.keys(config)) {
-        this[key] = config[key];
+    }
+    // Private
+    if (config.private) {
+      for (let key of Object.keys(config.private)) {
+        this[key] = config.private[key];
       }
-    });
-  }
+    }
+  });
+
   // Default values for props
   if (props) {
     template.onCreated(function() {
