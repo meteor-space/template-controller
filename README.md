@@ -1,14 +1,14 @@
 # TemplateController
 
-**Syntactic sugar for best practice Blaze templates**
+**Supports the best practices of writing Blaze templates**
 
 *Blaze is awesome* but writing the Js part of templates always
 felt a bit awkward. This package just provides a very thin layer of syntactic
-sugar on top of the standard API, so you can follow the best practices outlined
-in the great [Blaze guide](http://guide.meteor.com/blaze.html#reusable-components)
+sugar on top of the standard API, so you can follow best practices outlined
+in the [Blaze guide](http://guide.meteor.com/blaze.html#reusable-components)
 more easily.
 
-Now you can turn this:
+**Now you can turn this:**
 
 ```html
 You have clicked the button {{counter}} times.
@@ -35,7 +35,7 @@ Template.hello.events({
 });
 ```
 
-into that:
+**into that:**
 
 ```html
 You have clicked the button {{state.counter}} times.
@@ -64,7 +64,7 @@ TemplateController('hello', {
 
 ## Usage
 
-### TemplateController(templateName, options)
+### `TemplateController(templateName, options)`
 
 **templateName**
 
@@ -82,9 +82,9 @@ TemplateController('hello', {
 
   // Validate the properties passed to the template from parents
   props: new SimpleSchema({
-    debounceTime: {
+    messageCount: {
       type: Number,
-      defaultValue: 100
+      defaultValue: 0
     }
   }),
 
@@ -163,7 +163,7 @@ TemplateController('message_count', {
 </template>
 ```
 
-you can access the value of `messageCount` anywhere in helpers etc. with
+… and you can access the value of `messageCount` anywhere in helpers etc. with
 `this.props.messageCount()`
 
 a parent template can provide the `messageCount` prop with standard Blaze:
