@@ -52,7 +52,7 @@ TemplateController('hello', {
   events: {
     'click button'() {
       // increment the counter when button is clicked
-      this.counter(this.counter() + 1);
+      this.state.counter(this.state.counter() + 1);
     }
   }
 
