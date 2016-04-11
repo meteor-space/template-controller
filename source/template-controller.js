@@ -1,5 +1,5 @@
 const DEFAULT_API = [
-  'state', 'props', 'helpers', 'events', 'onCreated', 'onRendered', 'onDestroyed'
+  'state', 'props', 'helpers', 'events', 'trigger', 'onCreated', 'onRendered', 'onDestroyed'
 ];
 
 // Helpers
