@@ -1,5 +1,5 @@
 const DEFAULT_API = [
-  'state', 'props', 'helpers', 'events', 'onCreated', 'onRendered', 'onDestroyed'
+  'state', 'props', 'helpers', 'events', 'trigger', 'onCreated', 'onRendered', 'onDestroyed'
 ];
 
 // Helpers
@@ -27,6 +27,12 @@ const generateReactiveAccessor = function(defaultValue) {
   };
 };
 
+const generateTrigger = function(eventName, object) {
+  return function(args) {
+    Template.instance().$(object).trigger(eventName, args);
+  }
+};
+
 // Errors
 class TemplateNotFoundError extends ExtendableError {
   constructor(templateName) {
@@ -47,7 +53,7 @@ TemplateController = function(templateName, config) {
   if (!template) {
     throw new TemplateNotFoundError(templateName);
   }
-  let { state, props, helpers, events, onCreated, onRendered, onDestroyed } = config;
+  let { state, props, helpers, events, trigger, onCreated, onRendered, onDestroyed } = config;
 
   // Remove all standard api props fromt he config so we can have add the
   // rest to the template instance!
@@ -55,7 +61,7 @@ TemplateController = function(templateName, config) {
     delete config[apiProp];
   }
 
-  // State & private instance methods
+  // State & private instance methods, as well as event triggers
   template.onCreated(function() {
     if (state) {
       this.state = {};
@@ -68,6 +74,13 @@ TemplateController = function(templateName, config) {
     if (config.private) {
       for (let key of Object.keys(config.private)) {
         this[key] = config.private[key];
+      }
+    }
+    if (trigger) {
+      this.trigger = {};
+      // Setup the trigger as a set of function calls to wrap event triggers
+      for (let key of Object.keys(trigger)) {
+        this.trigger[key] = generateTrigger(key, trigger[key]);
       }
     }
   });
