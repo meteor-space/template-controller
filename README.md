@@ -114,6 +114,12 @@ TemplateController('hello', {
     }
   },
 
+  // Events that the template can trigger is defined in trigger
+  trigger: {
+    customButtonEvent: 'button' // Triggered by calling this.trigger.customButtonEvent(optionalArguments);
+    customSpecialEvent: '.special' // Triggered by calling this.trigger.customSpecialEvent(optionalArguments);
+  }
+
   // These are added to the template instance but not exposed to the html
   private: {
     someProperty: 5,
@@ -235,6 +241,34 @@ TemplateController('hello', {
     sum(first, second) {
       return first + second;
     }
+  }
+});
+```
+
+### `trigger: { myEvent: myObject,… }`
+
+Blaze doesn't natively support event creation, but this TemplateController offers
+a solution (that doesn't require writing any jQuery code). To create a trigger
+you first initialize them in the config. This syntax doubles as a list of available
+events that a parent controller can listen to.
+
+```javascript
+TemplateController('hello', {
+
+  // Define event triggers
+  trigger: {
+    customSpecialEvent: '.special' // Triggered by calling this.trigger.customSpecialEvent(optionalArguments);
+  }
+});
+```
+
+After being initialized the triggers can be used by calling them as functions.
+
+```javascript
+TemplateController('hello', {
+
+  onRendered() {
+    this.trigger.customSpecialEvent();
   }
 });
 ```
