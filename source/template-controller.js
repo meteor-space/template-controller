@@ -93,11 +93,11 @@ TemplateController = function(templateName, config) {
     });
   }
   // Helpers
-  if (helpers) {
-    helpers.state = function() { return this.state; };
-    helpers.props = function() { return this.props; };
-    template.helpers(bindToTemplateInstance(helpers));
-  }
+  if (!helpers) helpers = {};
+  helpers.state = function() { return this.state; };
+  helpers.props = function() { return this.props; };
+  template.helpers(bindToTemplateInstance(helpers));
+
   // Events
   if (events) {
     template.events(bindToTemplateInstance(events));
