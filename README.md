@@ -239,6 +239,41 @@ TemplateController('hello', {
 });
 ```
 
+### `this.triggerEvent(eventName, data)`
+
+Provides syntactic sugar to trigger a custom jQuery event on the `firstNode`
+of your template. This equivalent to `this.$(this.firstNode).trigger(eventName, data)`. As you rarely need to (or
+should) trigger custom events on sub-elements of the template we consider
+this simple wrapper as best practice.
+
+Another important difference is that you cannot pass multiple event arguments
+like you can with the jQuery `trigger` api. We only allow a single argument
+on purpose, to promote the best practice of avoiding argument lists.
+
+Here is a simple example:
+
+```javascript
+TemplateController('hello', {
+  events: {
+    'click button'() {
+      let incrementedValue = this.state.counter() + 1;
+      this.state.counter(incrementedValue);
+      this.triggerEvent('counterIncremented', incrementedValue);
+    }
+  }
+});
+```
+
+if you need to include more event data just pass down an object with named
+properties:
+
+```javascript
+this.triggerEvent('counterIncremented', {
+  value: incrementedValue,
+  timestamp: new Date()
+});
+```
+
 ## Release History
 You can find the complete release history in the
 [changelog](https://github.com/meteor-space/template-controller/blob/master/CHANGELOG.md)

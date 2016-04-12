@@ -70,6 +70,10 @@ TemplateController = function(templateName, config) {
         this[key] = config.private[key];
       }
     }
+    // Add sugar method for triggering custom jQuery events on the root node
+    this.triggerEvent = (eventName, data) => {
+      this.$(this.firstNode).trigger(eventName, data);
+    };
   });
 
   // Default values for props
@@ -102,6 +106,7 @@ TemplateController = function(templateName, config) {
   if (events) {
     template.events(bindToTemplateInstance(events));
   }
+
   // Lifecycle
   if (onCreated) template.onCreated(onCreated);
   if (onRendered) template.onRendered(onRendered);
