@@ -264,7 +264,7 @@ TemplateController('hello', {
 });
 ```
 
-if you need to include more event data just pass down an object with named
+if you need to include more event data just pass an object with named
 properties:
 
 ```javascript
@@ -272,6 +272,38 @@ this.triggerEvent('counterIncremented', {
   value: incrementedValue,
   timestamp: new Date()
 });
+```
+
+In parent templates you can handle these custom events like this:
+
+```javascript
+TemplateController('some_parent_template', {
+  events: {
+    'counterIncremented'(event, data) {
+      // do something with the event
+    }
+  }
+});
+```
+
+Notice in the example above that it is not necessary (and even discouraged)
+to add a selector for the event handler (eg: `'counterIncremented .hello'`)!
+The problem with this approach is that you are coupling the parent template
+to the DOM structure and CSS classes of the child components while you are
+just interested in the events. If you need to handle many different events
+try to make the event names more specific like `helloCounterIncremented`
+instead of general purpose events like `incremented` which could be published
+by various components.
+
+If you have multiple instance of the same reusable sub-component that you
+need to manage, wrap each instance in a separate DOM element and add a
+unique css class to the wrapper like this:
+
+```html
+<template name="some_parent_template">
+<div class="first-counter">{{> counter}}</div>
+<div class="second-counter">{{> counter}}</div>
+</template>
 ```
 
 ## Release History
