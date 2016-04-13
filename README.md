@@ -301,10 +301,27 @@ unique css class to the wrapper like this:
 
 ```html
 <template name="some_parent_template">
-<div class="first-counter">{{> counter}}</div>
-<div class="second-counter">{{> counter}}</div>
+  <div class="first-counter">{{> counter}}</div>
+  <div class="second-counter">{{> counter}}</div>
+  <div class="third-counter">{{> counter}}</div>
 </template>
 ```
+
+Then you can easily distinguish where the events come by using selectors:
+
+```javascript
+TemplateController('some_parent_template', {
+  events: {
+    'counterIncremented .first-counter'() {},
+    'counterIncremented .second-counter'() {},
+    'counterIncremented .third-counter'() {}
+  }
+});
+```
+This way you are not coupling the controller code of `some_parent_template`
+to the internal DOM of the `counter` template but keep the control where it
+belongs! You can refactor and improve the `counter` template as you like now,
+as long as you keep the API contract (events) intact!
 
 ## Release History
 You can find the complete release history in the
