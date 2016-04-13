@@ -239,6 +239,90 @@ TemplateController('hello', {
 });
 ```
 
+### `this.triggerEvent(eventName, data)`
+
+Provides syntactic sugar to trigger a custom jQuery event on the `firstNode`
+of your template. This equivalent to `this.$(this.firstNode).trigger(eventName, data)`. As you rarely need to (or
+should) trigger custom events on sub-elements of the template we consider
+this simple wrapper as best practice.
+
+Another important difference is that you cannot pass multiple event arguments
+like you can with the jQuery `trigger` api. We only allow a single argument
+on purpose, to promote the best practice of avoiding argument lists.
+
+Here is a simple example:
+
+```javascript
+TemplateController('hello', {
+  events: {
+    'click button'() {
+      let incrementedValue = this.state.counter() + 1;
+      this.state.counter(incrementedValue);
+      this.triggerEvent('counterIncremented', incrementedValue);
+    }
+  }
+});
+```
+
+if you need to include more event data just pass an object with named
+properties:
+
+```javascript
+this.triggerEvent('counterIncremented', {
+  value: incrementedValue,
+  timestamp: new Date()
+});
+```
+
+In parent templates you can handle these custom events like this:
+
+```javascript
+TemplateController('some_parent_template', {
+  events: {
+    'counterIncremented'(event, data) {
+      // do something with the event
+    }
+  }
+});
+```
+
+Notice in the example above that it is not necessary (and even discouraged)
+to add a selector for the event handler (eg: `'counterIncremented .hello'`)!
+The problem with this approach is that you are coupling the parent template
+to the DOM structure and CSS classes of the child components while you are
+just interested in the events. If you need to handle many different events
+try to make the event names more specific like `helloCounterIncremented`
+instead of general purpose events like `incremented` which could be published
+by various components.
+
+If you have multiple instance of the same reusable sub-component that you
+need to manage, wrap each instance in a separate DOM element and add a
+unique css class to the wrapper like this:
+
+```html
+<template name="some_parent_template">
+  <div class="first-counter">{{> counter}}</div>
+  <div class="second-counter">{{> counter}}</div>
+  <div class="third-counter">{{> counter}}</div>
+</template>
+```
+
+Then you can easily distinguish where the events come from by using selectors:
+
+```javascript
+TemplateController('some_parent_template', {
+  events: {
+    'counterIncremented .first-counter'() {},
+    'counterIncremented .second-counter'() {},
+    'counterIncremented .third-counter'() {}
+  }
+});
+```
+This way you are not coupling the controller code of `some_parent_template`
+to the internal DOM of the `counter` template but keep the control where it
+belongs! You can refactor and improve the `counter` template as you like now,
+as long as you keep the API contract (events) intact!
+
 ## Release History
 You can find the complete release history in the
 [changelog](https://github.com/meteor-space/template-controller/blob/master/CHANGELOG.md)

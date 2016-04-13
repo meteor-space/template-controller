@@ -70,6 +70,10 @@ TemplateController = function(templateName, config) {
         this[key] = config.private[key];
       }
     }
+    // Add sugar method for triggering custom jQuery events on the root node
+    this.triggerEvent = (eventName, data) => {
+      this.$(this.firstNode).trigger(eventName, data);
+    };
   });
 
   // Default values for props
@@ -93,15 +97,16 @@ TemplateController = function(templateName, config) {
     });
   }
   // Helpers
-  if (helpers) {
-    helpers.state = function() { return this.state; };
-    helpers.props = function() { return this.props; };
-    template.helpers(bindToTemplateInstance(helpers));
-  }
+  if (!helpers) helpers = {};
+  helpers.state = function() { return this.state; };
+  helpers.props = function() { return this.props; };
+  template.helpers(bindToTemplateInstance(helpers));
+
   // Events
   if (events) {
     template.events(bindToTemplateInstance(events));
   }
+
   // Lifecycle
   if (onCreated) template.onCreated(onCreated);
   if (onRendered) template.onRendered(onRendered);
