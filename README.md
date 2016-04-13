@@ -307,7 +307,7 @@ unique css class to the wrapper like this:
 </template>
 ```
 
-Then you can easily distinguish where the events come by using selectors:
+Then you can easily distinguish where the events come from by using selectors:
 
 ```javascript
 TemplateController('some_parent_template', {
