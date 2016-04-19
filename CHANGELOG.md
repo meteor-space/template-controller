@@ -1,7 +1,7 @@
 Changelog
 =========
 
-## Next
+## 0.2.1
 - improves error messages and fixes #6
 - Adds section about using a single root element to readme
 

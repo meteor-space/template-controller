@@ -25,7 +25,7 @@ observe-sequence@1.0.10
 promise@0.6.6
 random@1.0.8
 reactive-var@1.0.8
-space:template-controller@0.2.0
+space:template-controller@0.2.1
 spacebars@1.0.10
 spacebars-compiler@1.0.10
 templating@1.1.8
