@@ -1,6 +1,10 @@
 Changelog
 =========
 
+## Next
+- improves error messages and fixes #6
+- Adds section about using a single root element to readme
+
 ## 0.2.0
 - @Craphtex fixed a bug with setting up template helpers for `state` and `props`
 if no other helper was defined.

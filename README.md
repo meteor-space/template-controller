@@ -323,6 +323,22 @@ to the internal DOM of the `counter` template but keep the control where it
 belongs! You can refactor and improve the `counter` template as you like now,
 as long as you keep the API contract (events) intact!
 
+#### Single Root Element for your template
+
+`this.triggerEvent` only works if you defined a single root element for
+your template like this:
+
+```html
+<template name="my_component">
+  <div class="my-component">
+    // other content
+  </div>
+</template>
+```
+
+This is also a best practice that we recommend to avoid strange bugs when
+publishing jQuery events.
+
 ## Release History
 You can find the complete release history in the
 [changelog](https://github.com/meteor-space/template-controller/blob/master/CHANGELOG.md)

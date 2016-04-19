@@ -18,7 +18,6 @@ Package.onUse(function(api) {
   ], 'client');
 
   api.addFiles([
-    'source/extendable-error.js',
     'source/template-controller.js'
   ], 'client');
 

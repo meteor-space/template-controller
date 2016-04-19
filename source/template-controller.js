@@ -28,24 +28,41 @@ const generateReactiveAccessor = function(defaultValue) {
 };
 
 // Errors
-class TemplateNotFoundError extends ExtendableError {
-  constructor(templateName) {
-    super(`No template <${templateName}> found.`);
-  }
-}
+const templateNotFoundError = function(templateName) {
+  let error = new Error(`No template <${templateName}> found.`);
+  error.name = 'TemplateNotFoundError';
+  return error;
+};
 
-class PropertyValidatorRequired extends ExtendableError {
-  constructor() {
-    super('<data> must be a validator with #clean and #validate methods (see: SimpleSchema)');
-  }
-}
+const propertyValidatorRequired = function() {
+  let error = new Error(
+    '<data> must be a validator with #clean and #validate methods (see: SimpleSchema)'
+  );
+  error.name = 'PropertyValidatorRequired';
+  return error;
+};
+
+const propertyValidationError = function(error, templateName) {
+  error.name = 'PropertyValidationError';
+  error.message = `in <${templateName}> ` + error.message;
+  return error;
+};
+
+const rootElementRequired = function() {
+  let error = new Error(
+    'Please define a single root DOM element for your template.\n' +
+    'Learn more about this issue: https://github.com/meteor-space/template-controller/issues/6'
+  );
+  error.name = 'RootElementRequired';
+  return error;
+};
 
 // We have to make it a global to support Meteor 1.2.x
 TemplateController = function(templateName, config) {
   // Template reference
   let template = Template[templateName];
   if (!template) {
-    throw new TemplateNotFoundError(templateName);
+    throw templateNotFoundError(templateName);
   }
   let { state, props, helpers, events, onCreated, onRendered, onDestroyed } = config;
 
@@ -72,6 +89,8 @@ TemplateController = function(templateName, config) {
     }
     // Add sugar method for triggering custom jQuery events on the root node
     this.triggerEvent = (eventName, data) => {
+      // Force best practice of having a single root element for components!
+      if (this.firstNode !== this.lastNode) throw rootElementRequired();
       this.$(this.firstNode).trigger(eventName, data);
     };
   });
@@ -81,10 +100,14 @@ TemplateController = function(templateName, config) {
     template.onCreated(function() {
       this.props = {};
       this.autorun(() => {
-        if (!props.validate) throw new PropertyValidatorRequired();
+        if (!props.validate) throw propertyValidatorRequired();
         let currentData = Template.currentData() || {};
         props.clean(currentData);
-        props.validate(currentData);
+        try {
+          props.validate(currentData);
+        } catch (error) {
+          throw propertyValidationError(error, this.view.name);
+        }
         for (let key of Object.keys(currentData)) {
           let value = currentData[key];
           if (!this.props[key]) {
