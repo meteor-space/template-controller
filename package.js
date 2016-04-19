@@ -1,7 +1,7 @@
 Package.describe({
   summary: 'Syntactic sugar for blaze templates',
   name: 'space:template-controller',
-  version: '0.2.0',
+  version: '0.2.1',
   git: 'https://github.com/meteor-space/template-controller.git'
 });
 
@@ -18,7 +18,6 @@ Package.onUse(function(api) {
   ], 'client');
 
   api.addFiles([
-    'source/extendable-error.js',
     'source/template-controller.js'
   ], 'client');
 
