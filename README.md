@@ -279,7 +279,7 @@ In parent templates you can handle these custom events like this:
 ```javascript
 TemplateController('some_parent_template', {
   events: {
-    'counterIncremented'(event, data) {
+    'counterIncremented'(event, instance, data) {
       // do something with the event
     }
   }
