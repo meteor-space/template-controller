@@ -93,11 +93,9 @@ TemplateController = function(templateName, config) {
       if (this.firstNode !== this.lastNode) throw rootElementRequired();
       this.$(this.firstNode).trigger(eventName, data);
     };
-  });
 
-  // Default values for props
-  if (props) {
-    template.onCreated(function() {
+    // Default values for props
+    if (props) {
       this.props = {};
       this.autorun(() => {
         if (!props.validate) throw propertyValidatorRequired();
@@ -117,8 +115,10 @@ TemplateController = function(templateName, config) {
           }
         }
       });
-    });
-  }
+    }
+  });
+
+
   // Helpers
   if (!helpers) helpers = {};
   helpers.state = function() { return this.state; };
