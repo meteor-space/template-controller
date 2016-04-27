@@ -1,6 +1,9 @@
 Changelog
 =========
 
+## 0.2.3
+- Make it possible to configure the props cleaning operation of libs like SimpleSchema.
+
 ## 0.2.2
 - Fixes weird ecmascript errors in Meteor 1.2.x
 

@@ -279,7 +279,7 @@ In parent templates you can handle these custom events like this:
 ```javascript
 TemplateController('some_parent_template', {
   events: {
-    'counterIncremented'(event, data) {
+    'counterIncremented'(event, instance, data) {
       // do something with the event
     }
   }
@@ -338,6 +338,21 @@ your template like this:
 
 This is also a best practice that we recommend to avoid strange bugs when
 publishing jQuery events.
+
+## Configuration
+
+### `TemplateController.setPropsCleanConfiguration(Object)`
+Enables you to configure the props cleaning operation of libs like SimpleSchema. Checkout [SimpleSchema clean docs](https://github.com/aldeed/meteor-simple-schema#cleaning-data) to
+see your options.
+
+Here is one example why `removeEmptyStrings: true` is the default config:
+
+
+```handlebars
+{{> button label=(i18n 'button_label') }}
+```
+`i18n` might initially return an empty string for your translation.
+This would cause an validation error because SimpleSchema removes empty strings by default when cleaning the data.
 
 ## Release History
 You can find the complete release history in the
