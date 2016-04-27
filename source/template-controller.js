@@ -57,6 +57,8 @@ const rootElementRequired = function() {
   return error;
 };
 
+let propsCleanConfiguration = {};
+
 // We have to make it a global to support Meteor 1.2.x
 TemplateController = function(templateName, config) {
   // Template reference
@@ -100,7 +102,7 @@ TemplateController = function(templateName, config) {
       this.autorun(() => {
         if (!props.validate) throw propertyValidatorRequired();
         let currentData = Template.currentData() || {};
-        props.clean(currentData);
+        props.clean(currentData, propsCleanConfiguration);
         try {
           props.validate(currentData);
         } catch (error) {
@@ -135,4 +137,8 @@ TemplateController = function(templateName, config) {
   if (onRendered) template.onRendered(onRendered);
   if (onDestroyed) template.onDestroyed(onDestroyed);
 
+};
+
+TemplateController.setPropsCleanConfiguration = (config) => {
+  propsCleanConfiguration = config;
 };
