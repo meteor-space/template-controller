@@ -1,7 +1,7 @@
 Changelog
 =========
 
-## Next
+## 0.2.3
 - Make it possible to configure the props cleaning operation of libs like SimpleSchema.
 
 ## 0.2.2
