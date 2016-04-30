@@ -358,5 +358,10 @@ This would cause an validation error because SimpleSchema removes empty strings 
 You can find the complete release history in the
 [changelog](https://github.com/meteor-space/template-controller/blob/master/CHANGELOG.md)
 
+## Related Projects
+
+* [TemplateTwoWayBinding](https://github.com/comerc/meteor-template-two-way-binding) Two-Way Binding for Blaze templates with support for `TemplateController`.
+
+
 ## License
 Licensed under the MIT license.
