@@ -6,14 +6,27 @@ Changelog
 ### Breaking Changes:
 Introduces getters and setters for `props` and `state` properties, so now you
 have to access them like real properties on an object instead of calling a
-function. Now you have to do this
+function. Now you can write this
 ```javascript
-this.state.counter += 1;
+events: {
+  'click button'() {
+    // increment the counter when button is clicked
+    this.state.counter += 1;
+  }
+}
 ```
   instead of
 ```javascript
-this.state.counter(this.state.counter() + 1);
+events: {
+  'click button'() {
+    // increment the counter when button is clicked
+    this.state.counter(this.state.counter() + 1);
+  }
+}
 ```
+which will greatly simplify your template code :)
+[see full example](https://github.com/meteor-space/template-controller/blob/master/README.md#templatecontroller)
+
 ### New Features:
 
 #### Dynamically adding reactive properties to `state` and `props`
@@ -22,6 +35,8 @@ You can dynamically add new reactive properties to `props` and `state` like this
 this.state.addProperty(key, defaultValue);
 this.state.addProperties({ key: value, ... }); // multiple at once:
 ```
+[checkout the docs](https://github.com/meteor-space/template-controller/blob/master/README.md#dynamically-adding-reactive-properties-to-state-and-props)
+
 #### Use internal helpers
 There are two internal helper functions now exposed on the api, which can be
 useful to re-use in certain situations:
