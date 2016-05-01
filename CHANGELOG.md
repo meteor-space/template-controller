@@ -1,7 +1,7 @@
 Changelog
 =========
 
-## Next
+## 0.3.0
 
 ### Breaking Changes:
 Introduces getters and setters for `props` and `state` properties, so now you
