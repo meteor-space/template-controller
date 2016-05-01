@@ -52,7 +52,7 @@ TemplateController('hello', {
   events: {
     'click button'() {
       // increment the counter when button is clicked
-      this.state.counter(this.state.counter() + 1);
+      this.state.counter += 1;
     }
   }
 
@@ -181,7 +181,7 @@ TemplateController('message_count', {
 ```
 
 … and you can access the value of `messageCount` anywhere in helpers etc. with
-`this.props.messageCount()`
+`this.props.messageCount`
 
 a parent template can provide the `messageCount` prop with standard Blaze:
 ```html
@@ -195,9 +195,9 @@ our component will throw a nice validation error.
 
 ### `state: { myProperty: defaultValue, … }`
 
-Each state property you define is turned into a `ReactiveVar` and wrapped into
-an accessor function, available via `this.state.myProperty()` as getter and
-`this.state.myProperty(newValue)` as setter. The reason why we are not using
+Each state property you define is turned into a `ReactiveVar` and you can get
+the value with `this.state.myProperty` and set it like a normal property
+`this.state.myProperty = newValue`. The reason why we are not using
 `ReactiveVar` directly is simple: we need a template helper to render it in
 our html template! So `TemplateController` actually adds a `state` template
 helper which returns `this.state` and thus you can render any state var in
@@ -207,13 +207,12 @@ your templates like this:
 You have clicked the button {{state.counter}} times.
 ```
 
-But you can also set the state var easily in your Js code like this:
+But you can also modify the state var easily in your Js code like this:
 
 ```javascript
 events: {
   'click button'() {
-    let incrementedValue = this.state.counter() + 1;
-    this.state.counter(incrementedValue);
+    this.state.counter += 1;
   }
 }
 ```
@@ -269,9 +268,8 @@ Here is a simple example:
 TemplateController('hello', {
   events: {
     'click button'() {
-      let incrementedValue = this.state.counter() + 1;
-      this.state.counter(incrementedValue);
-      this.triggerEvent('counterIncremented', incrementedValue);
+      this.state.counter += 1;
+      this.triggerEvent('counterIncremented', this.state.counter);
     }
   }
 });
@@ -352,6 +350,48 @@ your template like this:
 This is also a best practice that we recommend to avoid strange bugs when
 publishing jQuery events.
 
+### Internal APIs
+
+In some situations you might need more control over your templates and want
+to use some of the internal helpers to reduce boilerplate even more.
+
+#### Dynamically adding reactive properties to `state` and `props`
+
+You can dynamically add new reactive properties to `props` and `state` at any
+point of the lifetime of your template:
+```javascript
+TemplateController('hello', {
+  onCreated() {
+    this.state.addProperty('counter', 0);
+  }  
+});
+```
+This opens up interesting meta-programming capabilities like passing in schemas
+or models and generate state on the fly:
+
+```javascript
+TemplateController('hello', {
+  props: new SimpleSchema({
+    model: { type: Object, blackbox: true }
+  }),
+  onCreated() {
+    // Generate named reactive properties on the fly
+    this.state.addProperties(this.props.model);
+  }
+});
+```
+
+
+#### Binding Functions to `Template.instance()`
+There are two internal helper functions, which can be used to bind any function
+to run in the context of your template instance:
+```javascript
+// Bind a function to be bound to the Template.instance() -> returns new bound fn
+let bound = TemplateController.bindToTemplateInstance(Function);
+// Wrap all functions of the provided object -> updates object methods in-place!
+TemplateController.bindAllToTemplateInstance({ key: Function, ... });
+```
+
 ## Configuration
 
 ### `TemplateController.setPropsCleanConfiguration(Object)`
@@ -359,7 +399,6 @@ Enables you to configure the props cleaning operation of libs like SimpleSchema.
 see your options.
 
 Here is one example why `removeEmptyStrings: true` is the default config:
-
 
 ```handlebars
 {{> button label=(i18n 'button_label') }}

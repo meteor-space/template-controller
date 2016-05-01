@@ -1,6 +1,37 @@
 Changelog
 =========
 
+## 0.3.0
+
+### Breaking Changes:
+Introduces getters and setters for `props` and `state` properties, so now you
+have to access them like real properties on an object instead of calling a
+function. Now you have to do this
+```javascript
+this.state.counter += 1;
+```
+  instead of
+```javascript
+this.state.counter(this.state.counter() + 1);
+```
+### New Features:
+
+#### Dynamically adding reactive properties to `state` and `props`
+You can dynamically add new reactive properties to `props` and `state` like this:
+```javascript
+this.state.addProperty(key, defaultValue);
+this.state.addProperties({ key: value, ... }); // multiple at once:
+```
+#### Use internal helpers
+There are two internal helper functions now exposed on the api, which can be
+useful to re-use in certain situations:
+```javascript
+// Wrap a function to be bound to the Template.instance()
+TemplateController.bindToTemplateInstance(Function);
+// Wrap all functions of the provided object
+TemplateController.bindAllToTemplateInstance({ key: Function, ... });
+```
+
 ## 0.2.3
 - Make it possible to configure the props cleaning operation of libs like SimpleSchema.
 

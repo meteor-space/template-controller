@@ -2,29 +2,36 @@ const DEFAULT_API = [
   'state', 'props', 'helpers', 'events', 'onCreated', 'onRendered', 'onDestroyed'
 ];
 
+class ReactiveObject {
+  constructor(properties = {}) {
+    this.addProperties(properties);
+  }
+  addProperty(key, defaultValue = null) {
+    const property = new ReactiveVar(defaultValue);
+    Object.defineProperty(this, key, {
+      get: () => { return property.get(); },
+      set: (value) => { property.set(value); }
+    });
+  }
+  addProperties(properties = {}) {
+    for (let key of Object.keys(properties)) {
+      this.addProperty(key, properties[key]);
+    }
+  }
+}
+
 // Helpers
-const withTemplateInstanceContext = function(handler) {
+const bindToTemplateInstance = function(handler) {
   return function() {
     return handler.apply(Template.instance(), arguments);
   };
 };
 
-const bindToTemplateInstance = function(handlers) {
+const bindAllToTemplateInstance = function(handlers) {
   for (let key of Object.keys(handlers)) {
-    handlers[key] = withTemplateInstanceContext(handlers[key]);
+    handlers[key] = bindToTemplateInstance(handlers[key]);
   }
   return handlers;
-};
-
-const generateReactiveAccessor = function(defaultValue) {
-  let value = new ReactiveVar(defaultValue);
-  return function(newValue) {
-    if (newValue !== undefined) {
-      value.set(newValue);
-    } else {
-      return value.get();
-    }
-  };
 };
 
 // Errors
@@ -76,13 +83,7 @@ TemplateController = function(templateName, config) {
 
   // State & private instance methods
   template.onCreated(function() {
-    if (state) {
-      this.state = {};
-      // Setup the state as reactive vars
-      for (let key of Object.keys(state)) {
-        this.state[key] = generateReactiveAccessor(state[key]);
-      }
-    }
+    this.state = new ReactiveObject(state);
     // Private
     if (config.private) {
       for (let key of Object.keys(config.private)) {
@@ -96,9 +97,9 @@ TemplateController = function(templateName, config) {
       this.$(this.firstNode).trigger(eventName, data);
     };
 
-    // Default values for props
+    // Setup validated reactive props passed from the outside
+    this.props = new ReactiveObject();
     if (props) {
-      this.props = {};
       this.autorun(() => {
         if (!props.validate) throw propertyValidatorRequired();
         let currentData = Template.currentData() || {};
@@ -110,10 +111,10 @@ TemplateController = function(templateName, config) {
         }
         for (let key of Object.keys(currentData)) {
           let value = currentData[key];
-          if (!this.props[key]) {
-            this.props[key] = generateReactiveAccessor(value);
+          if (!this.props.hasOwnProperty(key)) {
+            this.props.addProperty(key, value);
           } else {
-            this.props[key](value);
+            this.props[key] = value;
           }
         }
       });
@@ -125,11 +126,11 @@ TemplateController = function(templateName, config) {
   if (!helpers) helpers = {};
   helpers.state = function() { return this.state; };
   helpers.props = function() { return this.props; };
-  template.helpers(bindToTemplateInstance(helpers));
+  template.helpers(bindAllToTemplateInstance(helpers));
 
   // Events
   if (events) {
-    template.events(bindToTemplateInstance(events));
+    template.events(bindAllToTemplateInstance(events));
   }
 
   // Lifecycle
@@ -142,3 +143,6 @@ TemplateController = function(templateName, config) {
 TemplateController.setPropsCleanConfiguration = (config) => {
   propsCleanConfiguration = config;
 };
+
+TemplateController.bindToTemplateInstance = bindToTemplateInstance;
+TemplateController.bindAllToTemplateInstance = bindAllToTemplateInstance;
