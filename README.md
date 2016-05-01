@@ -59,6 +59,19 @@ TemplateController('hello', {
 });
 ```
 
+Table of contents
+-----------------
+
+* [Installation](#installation)
+* [Usage](#usage)
+* [API](#api)
+* [Configuration](#configuration)
+* [Release History](#release-history)
+* [Related Projects](#related-projects)
+  * [Packages](#packages)
+  * [Examples](#examples)
+* [License](#license)
+
 ## Installation
 `meteor add space:template-controller`
 
