@@ -25,6 +25,7 @@ events: {
 }
 ```
 which will greatly simplify your template code :)
+[see full example](https://github.com/meteor-space/template-controller/blob/master/README.md#templatecontroller)
 
 ### New Features:
 
@@ -34,6 +35,8 @@ You can dynamically add new reactive properties to `props` and `state` like this
 this.state.addProperty(key, defaultValue);
 this.state.addProperties({ key: value, ... }); // multiple at once:
 ```
+[checkout the docs](https://github.com/meteor-space/template-controller/blob/master/README.md#dynamically-adding-reactive-properties-to-state-and-props)
+
 #### Use internal helpers
 There are two internal helper functions now exposed on the api, which can be
 useful to re-use in certain situations:
