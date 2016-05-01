@@ -6,13 +6,25 @@ Changelog
 ### Breaking Changes:
 Introduces getters and setters for `props` and `state` properties, so now you
 have to access them like real properties on an object instead of calling a
-function. Now you have to do this
+function. Now you can write this
 ```javascript
-this.state.counter += 1;
+events: {
+  'click button'() {
+    // increment the counter when button is clicked
+    this.state.counter += 1;
+  }
+}
 ```
   instead of
 ```javascript
-this.state.counter(this.state.counter() + 1);
+events: {
+  'click button'() {
+    // increment the counter when button is clicked
+    this.state.counter(this.state.counter() + 1);
+  }
+}
+which will greatly simplify your template code :)
+
 ```
 ### New Features:
 
