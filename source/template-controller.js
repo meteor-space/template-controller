@@ -83,9 +83,7 @@ TemplateController = function(templateName, config) {
 
   // State & private instance methods
   template.onCreated(function() {
-    if (state) {
-      this.state = new ReactiveObject(state);
-    }
+    this.state = new ReactiveObject(state);
     // Private
     if (config.private) {
       for (let key of Object.keys(config.private)) {
@@ -99,9 +97,9 @@ TemplateController = function(templateName, config) {
       this.$(this.firstNode).trigger(eventName, data);
     };
 
-    // Default values for props
+    // Setup validated reactive props passed from the outside
+    this.props = new ReactiveObject();
     if (props) {
-      this.props = new ReactiveObject();
       this.autorun(() => {
         if (!props.validate) throw propertyValidatorRequired();
         let currentData = Template.currentData() || {};
