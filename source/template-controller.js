@@ -145,3 +145,6 @@ TemplateController = function(templateName, config) {
 TemplateController.setPropsCleanConfiguration = (config) => {
   propsCleanConfiguration = config;
 };
+
+TemplateController.bindToTemplateInstance = bindToTemplateInstance;
+TemplateController.bindAllToTemplateInstance = bindAllToTemplateInstance;
