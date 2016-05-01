@@ -361,7 +361,7 @@ You can find the complete release history in the
 ## Related Projects
 
 * [TemplateTwoWayBinding](https://github.com/comerc/meteor-template-two-way-binding) Two-Way Binding for Blaze templates with support for `TemplateController`.
-
+* [Blaze Magic Events](https://github.com/themeteorites/blaze-magic-events) was confirmed by @comerc to work with `TemplateController`
 
 ## License
 Licensed under the MIT license.
