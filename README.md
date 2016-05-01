@@ -350,6 +350,48 @@ your template like this:
 This is also a best practice that we recommend to avoid strange bugs when
 publishing jQuery events.
 
+### Internal APIs
+
+In some situations you might need more control over your templates and want
+to use some of the internal helpers to reduce boilerplate even more.
+
+#### Dynamically adding reactive properties to `state` and `props`
+
+You can dynamically add new reactive properties to `props` and `state` at any
+point of the lifetime of your template:
+```javascript
+TemplateController('hello', {
+  onCreated() {
+    this.state.addProperty('counter', 0);
+  }  
+});
+```
+This opens up interesting meta-programming capabilities like passing in schemas
+or models and generate state on the fly:
+
+```javascript
+TemplateController('hello', {
+  props: new SimpleSchema({
+    model: { type: Object, blackbox: true }
+  }),
+  onCreated() {
+    // Generate named reactive properties on the fly
+    this.state.addProperties(this.props.model);
+  }
+});
+```
+
+
+#### Binding Functions to `Template.instance()`
+There are two internal helper functions, which can be used to bind any function
+to run in the context of your template instance:
+```javascript
+// Bind a function to be bound to the Template.instance() -> returns new bound fn
+let bound = TemplateController.bindToTemplateInstance(Function);
+// Wrap all functions of the provided object -> updates object methods in-place!
+TemplateController.bindAllToTemplateInstance({ key: Function, ... });
+```
+
 ## Configuration
 
 ### `TemplateController.setPropsCleanConfiguration(Object)`
@@ -357,7 +399,6 @@ Enables you to configure the props cleaning operation of libs like SimpleSchema.
 see your options.
 
 Here is one example why `removeEmptyStrings: true` is the default config:
-
 
 ```handlebars
 {{> button label=(i18n 'button_label') }}
