@@ -158,7 +158,7 @@ This api is compatible but not limited to
 [SimpleSchema](https://github.com/aldeed/meteor-simple-schema).
 
 This is a best practice outlined in the
-[Blaze guide - validate data context](https://github.com/aldeed/meteor-simple-schema)
+[Blaze guide - validate data context](http://guide.meteor.com/blaze.html#validate-data-context)
 section. `TemplateController` does provide a bit more functionality though:
 Any property you define in the schema is turned into a template helper
 that can be used as a reactive getter, also in the html template:
