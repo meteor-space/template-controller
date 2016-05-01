@@ -23,9 +23,9 @@ events: {
     this.state.counter(this.state.counter() + 1);
   }
 }
+```
 which will greatly simplify your template code :)
 
-```
 ### New Features:
 
 #### Dynamically adding reactive properties to `state` and `props`
