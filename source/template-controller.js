@@ -112,7 +112,7 @@ TemplateController = function(templateName, config) {
         for (let key of Object.keys(currentData)) {
           let value = currentData[key];
           if (!this.props.hasOwnProperty(key)) {
-            this.props.addProperty(key, value, true);
+            this.props.addProperty(key, value);
           } else {
             this.props[key] = value;
           }
