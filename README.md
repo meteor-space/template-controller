@@ -59,6 +59,19 @@ TemplateController('hello', {
 });
 ```
 
+Table of contents
+-----------------
+
+* [Installation](#installation)
+* [Usage](#usage)
+* [API](#api)
+* [Configuration](#configuration)
+* [Release History](#release-history)
+* [Related Projects](#related-projects)
+  * [Packages](#packages)
+  * [Examples](#examples)
+* [License](#license)
+
 ## Installation
 `meteor add space:template-controller`
 
@@ -357,6 +370,18 @@ This would cause an validation error because SimpleSchema removes empty strings 
 ## Release History
 You can find the complete release history in the
 [changelog](https://github.com/meteor-space/template-controller/blob/master/CHANGELOG.md)
+
+## Related Projects
+
+### Packages
+
+* [TemplateTwoWayBinding](https://github.com/comerc/meteor-template-two-way-binding) Two-Way Binding for Blaze templates with support for `TemplateController`.
+* [TemplateControllerModelMap](https://github.com/comerc/meteor-template-controller-model-map) Validate template state.
+* [Blaze Magic Events](https://github.com/themeteorites/blaze-magic-events) was confirmed by @comerc to work with `TemplateController`.
+
+### Examples
+
+* [Demo: template-controller + two-way-binding + model-map](https://github.com/comerc/meteor-template-controller-demo) by @comerc.
 
 ## License
 Licensed under the MIT license.
