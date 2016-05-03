@@ -357,8 +357,7 @@ to use some of the internal helpers to reduce boilerplate even more.
 
 #### Dynamically adding reactive properties to `state` and `props`
 
-You can dynamically add new reactive properties to `props` and `state` at any
-point of the lifetime of your template:
+You can dynamically add new reactive properties to `props` and `state` in the `onCreated` hook:
 ```javascript
 TemplateController('hello', {
   onCreated() {
