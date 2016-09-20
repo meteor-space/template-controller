@@ -146,6 +146,20 @@ work exactly the same as normal but `this` inside the handlers is always
 a reference to the `Template.instance()`. In most cases that's what you want
 and would expect. You can still access the data context via `this.data`.
 
+#### Accessing the Data Context of Child Templates
+Sometimes you have child Blaze templates that trigger events but do not send the 
+data context as event payload. Here is how you can always get a reference to
+the data context of the template where the event originated from:
+
+```javascript
+events: {
+  'click .from-child-template'(event) {
+     const childDataContext = Blaze.getData(event.target);
+     // do something with the data
+  },
+}
+```
+
 ### `props: { clean: Function, validate: Function}`
 
 Any data passed to your component should be validated to avoid UI bugs
