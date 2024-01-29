@@ -6,9 +6,7 @@ Package.describe({
 });
 
 Package.onUse(function(api) {
-
-  // Have to stay on Meteor 1.2.1 to be compatible with all Meteor versions.
-  api.versionsFrom('1.2.1');
+  api.versionsFrom('2.11.0');
 
   api.use([
     'ecmascript',
